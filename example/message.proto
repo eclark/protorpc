@@ -1,0 +1,8 @@
+package main;
+
+message ChatRequest {
+    required string line = 1;
+}
+message ChatResponse {
+    required int32 ok = 1;
+}

@@ -1,0 +1,7 @@
+package protorpc;
+
+message Header {
+    required uint64 seq = 1;
+    required string service_method = 2;
+    optional string error = 3;
+}
