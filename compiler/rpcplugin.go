@@ -126,7 +126,6 @@ func (g *RpcPlugin) Generate(file *FileDescriptor) {
 }
 
 func (g *RpcPlugin) GenerateImports(file *FileDescriptor) {
-	log.Stderr("generate-imports")
 	g.P()
 	g.P("// protorpc imports")
 	g.P("import ", Quote("os"))
