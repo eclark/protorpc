@@ -3,6 +3,7 @@ package protorpc
 import (
 	"rpc"
 	"io"
+	"net"
 	"os"
 	"goprotobuf.googlecode.com/hg/proto"
 )
@@ -124,4 +125,16 @@ func (c *serverCodec) Close() os.Error {
 
 func ServeConn(conn io.ReadWriteCloser) {
 	rpc.ServeCodec(NewServerCodec(conn))
+}
+
+func Serve(l net.Listener) os.Error {
+	for {
+		conn, err := l.Accept()
+		if err != nil {
+			return err
+		}
+
+		go ServeConn(conn)
+	}
+	return nil
 }

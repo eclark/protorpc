@@ -2,7 +2,6 @@ package main
 
 import (
 	"os"
-	"rpc"
 	"log"
 	"net"
 	"local/protorpc"
@@ -19,23 +18,14 @@ func (e *MyChatService) Chat(req *ChatRequest, resp *ChatResponse) os.Error {
 	return nil
 }
 
-
 func main() {
 	echo := new(MyChatService)
-	rpc.Register(echo)
-
+	RegisterChatService(echo)
 
 	l, e := net.Listen("tcp",":1234")
 	if e != nil {
 		log.Exit("listen error:",e)
 	}
 
-	for {
-		conn, err := l.Accept()
-		if err != nil {
-			log.Stderr("accept error:",err)
-		}
-
-		go protorpc.ServeConn(conn)
-	}
+	protorpc.Serve(l)
 }

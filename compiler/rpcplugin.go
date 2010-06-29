@@ -24,42 +24,6 @@ func (g *RpcPlugin) Init(ng *Generator) {
 	g.Generator = ng
 }
 
-/*
-
-import (
-	"os"
-	"local/protorpc"
-)
-
-type ChatService interface {
-// for each method
-	Chat(*ChatRequest, *ChatResponse) os.Error
-}
-
-type ChatServiceClient struct {
-	*rpc.Client
-}
-
-func NewChatServiceClient(net, laddr, raddr string) (csc *ChatServiceClient, err os.Error) {
-	client, err := protorpc.Dial(net, laddr, raddr)
-	if err != nil {
-		return
-	}
-	csc = new(ChatServiceClient)
-	csc.Client = client
-	return
-}
-
-// for each method
-func (csc *ChatServiceClient) Chat(request *ChatRequest, response *ChatResponse) os.Error {
-	err := csc.Call("ChatService.Chat", request, response)
-	if err != nil {
-		return err
-	}
-}
-
-*/
-
 func (g *RpcPlugin) Generate(file *FileDescriptor) {
 	g.P()
 	g.P("// protorpc code")
@@ -82,6 +46,13 @@ func (g *RpcPlugin) Generate(file *FileDescriptor) {
 			g.P(name, "(*", input_type, ", *", output_type, ") os.Error")
 
 		}
+		g.Out()
+		g.P("}")
+
+		// build server registration helper
+		g.P("func Register", serviceName, "(s ", serviceName, ") os.Error {")
+		g.In()
+		g.P("return rpc.Register(s)")
 		g.Out()
 		g.P("}")
 
