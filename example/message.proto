@@ -6,3 +6,7 @@ message ChatRequest {
 message ChatResponse {
     required int32 ok = 1;
 }
+
+service ChatService {
+    rpc Chat (ChatRequest) returns (ChatResponse);
+}
