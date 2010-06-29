@@ -1,21 +1,15 @@
 package main
 
 import (
-	"rpc"
-	"net"
 	"log"
-	"local/protorpc"
 )
 
 func main() {
 
-	conn, err := net.Dial("tcp", "", "127.0.0.1:1234")
+	chatter, err := NewChatServiceClient("MyChatService", "tcp", "", "127.0.0.1:1234")
 	if err != nil {
-		log.Exit("dialing:", err)
+		log.Exit("making chat service:", err)
 	}
-
-	codec := protorpc.NewClientCodec(conn)
-	client := rpc.NewClientWithCodec(codec)
 
 	line := "hi martha focker";
 
@@ -23,9 +17,9 @@ func main() {
 	crq.Line = &line
 	crs := NewChatResponse()
 
-	err = client.Call("Echo.Echo", crq, crs)
+	err = chatter.Chat(crq,crs)
 	if err != nil {
-		log.Exit("echo error:", err)
+		log.Exit("chat error:", err)
 	}
 
 	log.Stderr("resp:", *crs.Ok)

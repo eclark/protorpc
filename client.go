@@ -4,6 +4,7 @@ import (
 	"rpc"
 	"io"
 	"os"
+	"net"
 	"goprotobuf.googlecode.com/hg/proto"
 )
 
@@ -118,4 +119,16 @@ func (c *clientCodec) ReadResponseBody(message interface{}) (err os.Error) {
 
 func (c *clientCodec) Close() os.Error {
 	return c.c.Close()
+}
+
+func Dial(netw, laddr, raddr string) (*rpc.Client,os.Error) {
+        conn, err := net.Dial(netw, laddr, raddr)
+        if err != nil {
+                return nil, err
+        }
+
+        codec := NewClientCodec(conn)
+        client := rpc.NewClientWithCodec(codec)
+
+	return client, nil
 }

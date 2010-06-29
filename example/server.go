@@ -8,9 +8,9 @@ import (
 	"local/protorpc"
 )
 
-type Echo int
+type MyChatService int
 
-func (e *Echo) Echo(req *ChatRequest, resp *ChatResponse) os.Error {
+func (e *MyChatService) Chat(req *ChatRequest, resp *ChatResponse) os.Error {
 	println(*req.Line);
 
 	v := int32(1);
@@ -21,7 +21,7 @@ func (e *Echo) Echo(req *ChatRequest, resp *ChatResponse) os.Error {
 
 
 func main() {
-	echo := new(Echo)
+	echo := new(MyChatService)
 	rpc.Register(echo)
 
 

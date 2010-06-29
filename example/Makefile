@@ -8,7 +8,7 @@ include $(GOROOT)/src/Make.$(GOARCH)
 
 CLEANFILES += server client message.pb.go
 
-include $(GOROOT)/src/pkg/goprotobuf.googlecode.com/hg/Make.protobuf
+#include $(GOROOT)/src/pkg/goprotobuf.googlecode.com/hg/Make.protobuf
 
 # ugly hack to deal with whitespaces in $GOROOT
 nullstring :=
@@ -16,6 +16,9 @@ space := $(nullstring) # a space at the end
 QUOTED_GOROOT:=$(subst $(space),\ ,$(GOROOT))
 
 include $(QUOTED_GOROOT)/src/Make.common
+
+%.pb.go:    %.proto
+	protoc --protorpc_out=. $<
 
 server: server.$O
 	$(QUOTED_GOBIN)/$(LD) -o $@ $@.$O

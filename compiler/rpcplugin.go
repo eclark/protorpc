@@ -2,6 +2,7 @@ package main
 
 import (
 //        desc "goprotobuf.googlecode.com/hg/compiler/descriptor"
+	//"goprotobuf.googlecode.com/hg/proto"
 	. "goprotobuf.googlecode.com/hg/compiler/generator"
 	"log"
 )
@@ -23,24 +24,114 @@ func (g *RpcPlugin) Init(ng *Generator) {
 	g.Generator = ng
 }
 
+/*
+
+import (
+	"os"
+	"local/protorpc"
+)
+
+type ChatService interface {
+// for each method
+	Chat(*ChatRequest, *ChatResponse) os.Error
+}
+
+type ChatServiceClient struct {
+	*rpc.Client
+}
+
+func NewChatServiceClient(net, laddr, raddr string) (csc *ChatServiceClient, err os.Error) {
+	client, err := protorpc.Dial(net, laddr, raddr)
+	if err != nil {
+		return
+	}
+	csc = new(ChatServiceClient)
+	csc.Client = client
+	return
+}
+
+// for each method
+func (csc *ChatServiceClient) Chat(request *ChatRequest, response *ChatResponse) os.Error {
+	err := csc.Call("ChatService.Chat", request, response)
+	if err != nil {
+		return err
+	}
+}
+
+*/
+
 func (g *RpcPlugin) Generate(file *FileDescriptor) {
-	log.Stderr("generate")
 	g.P()
-	g.P("// protorpc interface")
+	g.P("// protorpc code")
 
 	for _, sd := range file.Service {
-		log.Stderr(*sd.Name)
+		serviceName := *sd.Name
+		if serviceName == "" {
+			log.Stderr("no service name")
+			continue
+		}
+
+		// build the interface
+		g.P("type ", serviceName, " interface {")
+		g.In()
 		for _, m := range sd.Method {
 			name := *m.Name
-			input_type := *m.InputType
-			output_type := *m.OutputType
-			log.Stderr(name, input_type, output_type)
+			input_type := CamelCaseSlice(g.ObjectNamed(*m.InputType).TypeName())
+			output_type := CamelCaseSlice(g.ObjectNamed(*m.OutputType).TypeName())
+
+			g.P(name, "(*", input_type, ", *", output_type, ") os.Error")
+
 		}
+		g.Out()
+		g.P("}")
+
+		// build the concrete client
+		g.P("type ", serviceName, "Client struct {")
+		g.In()
+		g.P("*rpc.Client")
+		g.P("remoteName string")
+		g.Out()
+		g.P("}")
+
+		// client constructor
+		g.P("func New", serviceName, "Client(rname, net, laddr, raddr string) (csc *", serviceName, "Client, err os.Error) {")
+		g.In()
+		g.P("client, err := protorpc.Dial(net, laddr, raddr)")
+		g.P("if err != nil {")
+		g.In()
+		g.P("return")
+		g.Out()
+		g.P("}")
+		g.P("csc = new(", serviceName, "Client)")
+		g.P("csc.Client = client")
+		g.P("csc.remoteName = rname")
+		g.P("return")
+		g.Out()
+		g.P("}")
+
+		// build methods on client
+                for _, m := range sd.Method {
+                        name := *m.Name
+                        input_type := CamelCaseSlice(g.ObjectNamed(*m.InputType).TypeName())
+                        output_type := CamelCaseSlice(g.ObjectNamed(*m.OutputType).TypeName())
+
+			g.P("func (self *", serviceName, "Client) ", name, "(request *", input_type, ", response *", output_type, ") os.Error {")
+			g.In()
+			g.P("return self.Call(self.remoteName + ",Quote("." + name),", request, response)")
+			g.Out()
+			g.P("}")
+                }
+
 	}
 }
 
 func (g *RpcPlugin) GenerateImports(file *FileDescriptor) {
 	log.Stderr("generate-imports")
-
-	g.P("// this is where i will put imports")
+	g.P()
+	g.P("// protorpc imports")
+	g.P("import ", Quote("os"))
+	g.P("import ", Quote("rpc"))
+	g.P("import ", Quote("local/protorpc"))
 }
+
+
