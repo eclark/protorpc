@@ -65,7 +65,7 @@ func (c *clientCodec) WriteRequest(r *rpc.Request, message interface{}) (err os.
 func (c *clientCodec) ReadResponseHeader(r *rpc.Response) (err os.Error) {
 	c.resp.header.Reset()
 
-	lbuf := make([]byte, LenSize)
+	lbuf := make([]byte, lenSize)
 	_, err = io.ReadFull(c.c, lbuf)
 	if err != nil {
 		return
@@ -94,7 +94,7 @@ func (c *clientCodec) ReadResponseHeader(r *rpc.Response) (err os.Error) {
 func (c *clientCodec) ReadResponseBody(message interface{}) (err os.Error) {
 	c.resp.body.Reset()
 
-	lbuf := make([]byte, LenSize)
+	lbuf := make([]byte, lenSize)
 	_, err = io.ReadFull(c.c, lbuf)
 	if err != nil {
 		return

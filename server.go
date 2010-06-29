@@ -23,7 +23,7 @@ func NewServerCodec(conn io.ReadWriteCloser) rpc.ServerCodec {
 func (c *serverCodec) ReadRequestHeader(r *rpc.Request) (err os.Error) {
         c.req.header.Reset()
 
-        lbuf := make([]byte, LenSize)
+        lbuf := make([]byte, lenSize)
         _, err = io.ReadFull(c.c, lbuf)
         if err != nil {
                 return
@@ -52,7 +52,7 @@ func (c *serverCodec) ReadRequestHeader(r *rpc.Request) (err os.Error) {
 func (c *serverCodec) ReadRequestBody(message interface{}) (err os.Error) {
         c.req.body.Reset()
 
-        lbuf := make([]byte, LenSize)
+        lbuf := make([]byte, lenSize)
         _, err = io.ReadFull(c.c, lbuf)
         if err != nil {
                 return

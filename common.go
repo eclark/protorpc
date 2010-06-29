@@ -7,7 +7,7 @@ type bufferPair struct {
 	body *proto.Buffer
 }
 
-const LenSize = 4
+const lenSize = 4
 
 func encodeLen(length int) []byte {
 	b := make([]byte, 4)
