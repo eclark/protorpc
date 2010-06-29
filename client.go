@@ -15,10 +15,10 @@ type clientCodec struct {
 }
 
 func NewClientCodec(conn io.ReadWriteCloser) rpc.ClientCodec {
-	req := &bufferPair{proto.NewBuffer(nil),proto.NewBuffer(nil)}
-	resp := &bufferPair{proto.NewBuffer(nil),proto.NewBuffer(nil)}
+	req := &bufferPair{proto.NewBuffer(nil), proto.NewBuffer(nil)}
+	resp := &bufferPair{proto.NewBuffer(nil), proto.NewBuffer(nil)}
 
-	return &clientCodec{conn,req,resp}
+	return &clientCodec{conn, req, resp}
 }
 
 func (c *clientCodec) WriteRequest(r *rpc.Request, message interface{}) (err os.Error) {
@@ -33,7 +33,6 @@ func (c *clientCodec) WriteRequest(r *rpc.Request, message interface{}) (err os.
 	if err != nil {
 		return
 	}
-
 
 	err = c.req.body.Marshal(message)
 	if err != nil {
@@ -72,7 +71,7 @@ func (c *clientCodec) ReadResponseHeader(r *rpc.Response) (err os.Error) {
 		return
 	}
 
-	pbuf := make([]byte,decodeLen(lbuf))
+	pbuf := make([]byte, decodeLen(lbuf))
 	_, err = io.ReadFull(c.c, pbuf)
 	if err != nil {
 		return
@@ -88,6 +87,7 @@ func (c *clientCodec) ReadResponseHeader(r *rpc.Response) (err os.Error) {
 
 	r.Seq = *h.Seq
 	r.ServiceMethod = *h.ServiceMethod
+	r.Error = *h.Error
 
 	return nil
 }
@@ -101,7 +101,7 @@ func (c *clientCodec) ReadResponseBody(message interface{}) (err os.Error) {
 		return
 	}
 
-	pbuf := make([]byte,decodeLen(lbuf))
+	pbuf := make([]byte, decodeLen(lbuf))
 	_, err = io.ReadFull(c.c, pbuf)
 	if err != nil {
 		return
@@ -121,14 +121,14 @@ func (c *clientCodec) Close() os.Error {
 	return c.c.Close()
 }
 
-func Dial(netw, laddr, raddr string) (*rpc.Client,os.Error) {
-        conn, err := net.Dial(netw, laddr, raddr)
-        if err != nil {
-                return nil, err
-        }
+func Dial(netw, laddr, raddr string) (*rpc.Client, os.Error) {
+	conn, err := net.Dial(netw, laddr, raddr)
+	if err != nil {
+		return nil, err
+	}
 
-        codec := NewClientCodec(conn)
-        client := rpc.NewClientWithCodec(codec)
+	codec := NewClientCodec(conn)
+	client := rpc.NewClientWithCodec(codec)
 
 	return client, nil
 }

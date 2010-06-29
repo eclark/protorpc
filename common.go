@@ -4,7 +4,7 @@ import "goprotobuf.googlecode.com/hg/proto"
 
 type bufferPair struct {
 	header *proto.Buffer
-	body *proto.Buffer
+	body   *proto.Buffer
 }
 
 const lenSize = 4
@@ -20,5 +20,5 @@ func encodeLen(length int) []byte {
 }
 
 func decodeLen(b []byte) int {
-	return int(int32(b[0]) << 24 + int32(b[1]) << 16 + int32(b[2]) << 8 + int32(b[3]))
+	return int(int32(b[0])<<24 + int32(b[1])<<16 + int32(b[2])<<8 + int32(b[3]))
 }
