@@ -1,4 +1,4 @@
-# Copyright 2009 The Go Authors. All rights reserved.
+# Copyright 2010 Eric Clark. All rights reserved.
 # Use of this source code is governed by a BSD-style
 # license that can be found in the LICENSE file.
 
@@ -13,6 +13,7 @@ GOFILES=\
     header.pb.go\
 
 CLEANFILES += header.pb.go
+INSTALLFILES += compiler.make
 
 include $(GOROOT)/src/Make.pkg
 include $(GOROOT)/src/pkg/goprotobuf.googlecode.com/hg/Make.protobuf
