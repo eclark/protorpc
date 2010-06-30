@@ -1,0 +1,21 @@
+// Copyright 2010 Eric Clark. All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
+package main;
+
+message CalcRequest {
+    required int64 a = 1;
+    required int64 b = 2;
+}
+message CalcResponse {
+    required int64 result = 1;
+    optional int64 remainder = 2;
+}
+
+service CalcService {
+    rpc Add (CalcRequest) returns (CalcResponse);
+    rpc Subtract (CalcRequest) returns (CalcResponse);
+    rpc Multiply (CalcRequest) returns (CalcResponse);
+    rpc Divide (CalcRequest) returns (CalcResponse);
+}

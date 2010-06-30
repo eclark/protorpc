@@ -4,7 +4,7 @@
 
 include $(GOROOT)/src/Make.$(GOARCH)
 
-TARG=protoc-gen-protorpc
+TARG=protoc-gen-protorpc-go
 
 GOFILES=\
     $(GOROOT)/src/pkg/goprotobuf.googlecode.com/hg/compiler/main.go\

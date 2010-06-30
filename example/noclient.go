@@ -4,20 +4,8 @@
 
 package main
 
-import (
-	"log"
-	"net"
-	"local/protorpc"
-)
-
 func main() {
 	calc := new(MyCalcService)
-	RegisterCalcService(calc)
 
-	l, e := net.Listen("tcp",":1234")
-	if e != nil {
-		log.Exit("listen error:",e)
-	}
-
-	protorpc.Serve(l)
+	doCalc(calc)
 }
