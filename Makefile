@@ -18,3 +18,6 @@ INSTALLFILES += compiler.make
 include $(GOROOT)/src/Make.pkg
 include $(GOROOT)/src/pkg/goprotobuf.googlecode.com/hg/Make.protobuf
 
+dist: header.pb.go
+	cp header.pb.go header.dist.go
+

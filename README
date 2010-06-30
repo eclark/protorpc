@@ -23,6 +23,9 @@
 
     goinstall github.com/eclark/protorpc
 
+    cd $GOROOT/src/pkg/github.com/eclark/protorpc/compiler
+    make install
+
 # How it works
 
     Included is an alternate compiler plugin for protoc, building on the one
