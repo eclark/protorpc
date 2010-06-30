@@ -7,7 +7,7 @@ package main
 import (
 	"log"
 	"net"
-	"local/protorpc"
+	"github.com/eclark/protorpc"
 )
 
 func main() {

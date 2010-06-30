@@ -103,7 +103,7 @@ func (g *RpcPlugin) GenerateImports(file *FileDescriptor) {
 	g.P("// protorpc imports")
 	g.P("import ", Quote("os"))
 	g.P("import ", Quote("rpc"))
-	g.P("import ", Quote("local/protorpc"))
+	g.P("import ", Quote("github.com/eclark/protorpc"))
 }
 
 
