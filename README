@@ -1,0 +1,44 @@
+# About
+
+    protorpc is a very simple RPC implementation for Go and protobuf. It is
+    not intended for production use at this time, but because it builds on
+    the RPC implementation in the Go standard library as well as protobuf it
+    should be easy to work out any bugs.
+
+    protorpc is unrelated to any other Protocol Buffers RPC implementation
+    and does not intend to be compatible in API or wire format with any other.
+
+# License
+
+    Unless otherwise noted, the Go source files are distributed
+    under the BSD-style license found in the LICENSE file.
+
+# Requirements
+
+    Go - http://golang.org/doc/install.html
+    protobuf - http://code.google.com/p/protobuf/
+    goprotobuf - http://code.google.com/p/goprotobuf/
+
+# Installing
+
+    goinstall github.com/eclark/protorpc
+
+# How it works
+
+    Included is an alternate compiler plugin for protoc, building on the one
+    included with goprotobuf, that understands service descriptors in your
+    proto file.  It writes out an interface for your service, as well as
+    client methods to give you an easy, type safe wrapper around rpc.Call.
+
+# Usage
+
+    protoc --protorpc-go_out=. <input.proto>
+
+    Output will be the same as goprotobuf's compiler, with the addition of
+    the following for each service: one interface, one register function,
+    one client struct, one New function which returns the client struct,
+    and a method on the client struct for each method that the service
+    defines.
+
+    The best way to get started is to review the files in the example
+    directory.
