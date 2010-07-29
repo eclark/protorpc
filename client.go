@@ -29,7 +29,7 @@ func (c *clientCodec) WriteRequest(r *rpc.Request, message interface{}) (err os.
 	c.req.header.Reset()
 	c.req.body.Reset()
 
-	h := NewHeader()
+	h := new(Header)
 	h.Seq = &r.Seq
 	h.ServiceMethod = &r.ServiceMethod
 
@@ -83,7 +83,7 @@ func (c *clientCodec) ReadResponseHeader(r *rpc.Response) (err os.Error) {
 
 	c.resp.header.SetBuf(pbuf)
 
-	h := NewHeader()
+	h := new(Header)
 	err = c.resp.header.Unmarshal(h)
 	if err != nil {
 		return
