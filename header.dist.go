@@ -17,9 +17,6 @@ type Header struct {
 func (this *Header) Reset() {
 	*this = Header{}
 }
-func NewHeader() *Header {
-	return new(Header)
-}
 
 func init() {
 }
