@@ -33,7 +33,7 @@ func (g *RpcPlugin) Generate(file *FileDescriptor) {
 	for _, sd := range file.Service {
 		serviceName := *sd.Name
 		if serviceName == "" {
-			log.Stderr("no service name")
+			log.Println("no service name")
 			continue
 		}
 
@@ -101,7 +101,6 @@ func (g *RpcPlugin) Generate(file *FileDescriptor) {
 func (g *RpcPlugin) GenerateImports(file *FileDescriptor) {
 	g.P()
 	g.P("// protorpc imports")
-	g.P("import ", Quote("os"))
 	g.P("import ", Quote("rpc"))
 	g.P("import ", Quote("github.com/eclark/protorpc"))
 }
